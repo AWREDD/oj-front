@@ -28,31 +28,35 @@ interface RecordType {
   language: string;
 }
 
-const tags = [
-  { index: 0, content: "easy", color: "green" },
-  { index: 1, content: "2021", color: "orange" },
-  { index: 2, content: "noip", color: "red" },
-];
+const data = {
+  id: 1,
+  title: "两数相加",
+  description : {
+    content:
+        "给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。请你将两个数相加，并以相同形式返回一个表示和的链表。你可以假设除了数字 0 之外，这两个数都不会以 0 开头。",
+    example: [
+      {
+        input: "l1 = [2,4,3], l2 = [5,6,4]",
+        output: "l3 = [7,0,8]",
+      },
+      {
+        input: "l1 = [0], l2 = [0]",
+        output: "l3 = [0]",
+      },
+    ],
+    notice: [
+      "每个链表中的节点数在范围 [1, 100] 内",
+      "0 <= Node.val <= 9",
+      "题目数据保证列表表示的数字不含前导零",
+    ],
+  },
+  tags : [
+    { index: 0, content: "easy", color: "green" },
+    { index: 1, content: "2021", color: "orange" },
+    { index: 2, content: "noip", color: "red" },
+  ]
 
-const description = {
-  content:
-    "给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。请你将两个数相加，并以相同形式返回一个表示和的链表。你可以假设除了数字 0 之外，这两个数都不会以 0 开头。",
-  example: [
-    {
-      input: "l1 = [2,4,3], l2 = [5,6,4]",
-      output: "l3 = [7,0,8]",
-    },
-    {
-      input: "l1 = [0], l2 = [0]",
-      output: "l3 = [0]",
-    },
-  ],
-  notice: [
-    "每个链表中的节点数在范围 [1, 100] 内",
-    "0 <= Node.val <= 9",
-    "题目数据保证列表表示的数字不含前导零",
-  ],
-};
+}
 
 const record_col: ColumnsType<RecordType> = [
   { title: "Time", dataIndex: "time", key: "time" },
@@ -79,7 +83,7 @@ const record_col: ColumnsType<RecordType> = [
   { title: "Language", dataIndex: "language", key: "language" },
 ];
 
-const record: RecordType[] = [
+const record: any = [
   {
     key: "1",
     time: "2021-10-10 10:10:10",
@@ -112,7 +116,7 @@ const solution = {
   code: "test",
 };
 
-const Problem: React.FC = () => {
+const ProblemDetail: React.FC = () => {
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -121,10 +125,10 @@ const Problem: React.FC = () => {
         <div>
           <Typography>
             <Title level={4}>description</Title>
-            <Paragraph>{description.content}</Paragraph>
+            <Paragraph>{data.description.content}</Paragraph>
             <Title level={4}>Example</Title>
             <Paragraph type="secondary">
-              {description.example.map((e, i) => (
+              {data.description.example.map((e, i) => (
                 <div key={i}>
                   <div>
                     <Typography.Title level={5}>Input</Typography.Title>
@@ -144,7 +148,7 @@ const Problem: React.FC = () => {
             </Paragraph>
             <Title level={4}>Notice</Title>
             <Paragraph>
-              {description.notice.map((e, i) => (
+              {data.description.notice.map((e, i) => (
                 <li key={i}>{e}</li>
               ))}
             </Paragraph>
@@ -194,7 +198,7 @@ const Problem: React.FC = () => {
           <div>
             <Card title="Q1. 两数相加" style={{ height: 1000 }}>
               <Space wrap>
-                {tags.map((e) => (
+                {data.tags.map((e) => (
                   <Tag key={e.index} color={e.color} bordered>
                     {e.content}
                   </Tag>
@@ -264,4 +268,4 @@ const Problem: React.FC = () => {
   );
 };
 
-export default Problem;
+export default ProblemDetail;

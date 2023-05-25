@@ -8,15 +8,14 @@ export default ()=>{
 
   const goAssignmentDetail = () => {
     history.push({
-      pathname: '/assignment',
-      search: '${id}',
+      pathname: `/assignment/${id}`
   })
   };
 
   return(
     <div>
       <h2 style={{alignItems: 'center'}}>所有作业</h2>
-      
+      <Button onClick={goAssignmentDetail}>1</Button>
     </div>
     
   )

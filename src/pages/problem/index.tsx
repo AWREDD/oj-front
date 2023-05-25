@@ -1,6 +1,10 @@
 import React from 'react';
-import { Space, Table, Tag } from 'antd';
+import { Space, Table, Tag, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { history } from 'umi';
+
+// changer
+
 
 interface DataType {
   key: string;
@@ -10,80 +14,99 @@ interface DataType {
   tags: string[];
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: '状态',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
 
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
 
-const ProblemBank: React.FC = () => <Table columns={columns} dataSource={data} />;
 
-export default ProblemBank;
+
+export default () => {
+  const columns: ColumnsType<DataType> = [
+    {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) => <a>{status}</a>,
+    },
+    {
+      title: '题目',
+      dataIndex: 'title',
+      key: 'title',
+      render: (title) => <a>{title}</a>,
+    },
+    {
+      title: '年份',
+      dataIndex: 'year',
+      key: 'year',
+      render: (year) => <Tag color={'green'}>{year}</Tag>
+    },
+    {
+      title: '难度',
+      dataIndex: 'difficulty',
+      key: 'difficulty',
+      render: (difficulty) => <Tag color={
+        difficulty === "easy"
+            ? "green"
+            : difficulty === "medium"
+                ? "yellow"
+                : "red"
+      }>{difficulty}</Tag>
+    },
+    {
+      title: '出处',
+      dataIndex: 'competition',
+      key: 'competition',
+      render: (competition) => <Tag color={'blue'}>{competition}</Tag>
+    },
+    {
+      title: 'Action',
+      dataIndex: 'id',
+      key: 'id',
+      render: (id) => <a href={"problem/" + id}>进入</a>,
+    }
+  ];
+
+  const data: any = [
+    {
+      id: '1',
+      status: '1',
+      title: '两数相加1',
+      year: '2021',
+      difficulty: 'easy',
+      competition: 'noip'
+    },
+    {
+      id: '2',
+      status: '0',
+      title: '两数相加2',
+      year: '2021',
+      difficulty: 'easy',
+      competition: 'noip'
+    },
+    {
+      id: '3',
+      status: '1',
+      title: '两数相加3',
+      year: '2021',
+      difficulty: 'medium',
+      competition: 'noi'
+    },
+    {
+      id: '4',
+      status: '0',
+      title: '两数相加4',
+      year: '2022',
+      difficulty: 'hard',
+      competition: 'acm'
+    },
+  ];
+
+  const goProblemDetail = (id: number) => {
+    history.push(`/problem/${id}`);
+  };
+  return (
+      <div>
+        <Table columns={columns} dataSource={data} />
+      </div>
+      )
+
+}
   

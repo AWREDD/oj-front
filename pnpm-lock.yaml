@@ -25,6 +25,9 @@ dependencies:
   umi:
     specifier: ^4.0.69
     version: 4.0.69(@babel/core@7.21.8)(@types/react@18.2.6)(eslint@8.41.0)(postcss@8.4.23)(prettier@2.8.8)(react-dom@17.0.2)(react@17.0.2)(styled-components@5.3.10)(stylelint@14.16.1)(typescript@5.0.4)(webpack@5.83.1)
+  umi-request:
+    specifier: ^1.4.0
+    version: 1.4.0
 
 devDependencies:
   '@types/react':
@@ -4003,6 +4006,12 @@ packages:
     engines: {node: '>= 4'}
     dev: false
 
+  /encoding@0.1.13:
+    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    dependencies:
+      iconv-lite: 0.6.3
+    dev: false
+
   /end-of-stream@1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
     dependencies:
@@ -4965,7 +4974,6 @@ packages:
     dependencies:
       safer-buffer: 2.1.2
     dev: false
-    optional: true
 
   /icss-utils@5.1.0(postcss@8.4.23):
     resolution: {integrity: sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==}
@@ -5270,6 +5278,11 @@ packages:
       call-bind: 1.0.2
     dev: false
 
+  /is-stream@1.1.0:
+    resolution: {integrity: sha512-uQPm8kcs47jx38atAcWTVxyltQYoPT68y9aWYdV6yWXSyW8mzSat0TL6CiWdZeCdF3KrAvpVtnHbTv4RN+rqdQ==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
   /is-stream@2.0.1:
     resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
     engines: {node: '>=8'}
@@ -5347,6 +5360,13 @@ packages:
 
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+    dev: false
+
+  /isomorphic-fetch@2.2.1:
+    resolution: {integrity: sha512-9c4TNAKYXM5PRyVcwUZrF3W09nQ+sO7+jydgs4ZGW9dhsLG2VOlISJABombdQqQRXCwuYG3sYV/puGf5rp0qmA==}
+    dependencies:
+      node-fetch: 1.7.3
+      whatwg-fetch: 3.6.2
     dev: false
 
   /isomorphic-unfetch@4.0.2:
@@ -5933,6 +5953,13 @@ packages:
   /node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    dev: false
+
+  /node-fetch@1.7.3:
+    resolution: {integrity: sha512-NhZ4CsKx7cYm2vSrBAr2PvFOe6sWDf0UYLRqA6svUYg7+/TSfVAu49jYC4BvQ4Sms9SZgdqGBgroqfDhJdTyKQ==}
+    dependencies:
+      encoding: 0.1.13
+      is-stream: 1.1.0
     dev: false
 
   /node-fetch@3.3.1:
@@ -6900,6 +6927,13 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 17.0.2
+    dev: false
+
+  /qs@6.11.2:
+    resolution: {integrity: sha512-tDNIz22aBzCDxLtVH++VnTfzxlfeK5CbqohpSqpJgj1Wg/cQbStNAz3NuqCs5vV+pjBsK4x4pN9HlVh7rcYRiA==}
+    engines: {node: '>=0.6'}
+    dependencies:
+      side-channel: 1.0.4
     dev: false
 
   /query-string@6.14.1:
@@ -8671,6 +8705,13 @@ packages:
     engines: {node: '>=12.20'}
     hasBin: true
 
+  /umi-request@1.4.0:
+    resolution: {integrity: sha512-OknwtQZddZHi0Ggi+Vr/olJ7HNMx4AzlywyK0W3NZBT7B0stjeZ9lcztA85dBgdAj3KVk8uPJPZSnGaDjELhrA==}
+    dependencies:
+      isomorphic-fetch: 2.2.1
+      qs: 6.11.2
+    dev: false
+
   /umi@4.0.69(@babel/core@7.21.8)(@types/react@18.2.6)(eslint@8.41.0)(postcss@8.4.23)(prettier@2.8.8)(react-dom@17.0.2)(react@17.0.2)(styled-components@5.3.10)(stylelint@14.16.1)(typescript@5.0.4)(webpack@5.83.1):
     resolution: {integrity: sha512-n6MqLQnJKpCDPzzMptSBa/2yfawNs0yXSWg6yWwKAyVew+IxodqD99+6i9ssGCudXPaC5AnbjIqF4bwa1IjTWw==}
     engines: {node: '>=14'}
@@ -8954,6 +8995,10 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
+    dev: false
+
+  /whatwg-fetch@3.6.2:
+    resolution: {integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==}
     dev: false
 
   /which-boxed-primitive@1.0.2:

@@ -1,6 +1,6 @@
 import React from "react";
 import { history } from "umi";
-import { Typography } from "antd";
+import {Divider, Typography} from "antd";
 import { Card } from "antd";
 import { Col, Row } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -141,6 +141,7 @@ export default () => {
                       format="D 天 H 时 m 分 s 秒"
                     />
                   </div>
+                <Divider />
                 <Paragraph>{description.content}</Paragraph>
               </Typography>
             </div>
@@ -160,6 +161,7 @@ export default () => {
               </Typography>
             </div>
             <div>
+              <Divider />
               <Typography>
                 <Title level={1}>Backward</Title>
                 <Title level={5}>grade: {backward.grade}</Title>

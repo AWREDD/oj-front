@@ -10,6 +10,7 @@ import { Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Statistic } from "antd";
 import type { CountdownProps } from "antd";
+import { useLocation} from 'react-router-dom';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -27,7 +28,8 @@ const props: UploadProps = {
 };
 
 export default () => {
-
+    
+    const state = useLocation()
     console.log(history.location);
 
 

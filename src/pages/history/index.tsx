@@ -66,7 +66,7 @@ export default function History() {
       headers: {
         'Content-Type': 'application/json'
       }
-      
+
     });
       // console.log(await res.json());
       setisDoneLoading(true);
@@ -86,7 +86,13 @@ export default function History() {
   }else{
   return (
     <div>
-      <Table columns={columns} dataSource={response.data} />
+      <Table columns={columns} dataSource={response.data} 
+      onRow={(record) => ({
+        onClick: () => {
+          console.log(record.id);
+        },
+      })}
+      />
     </div>
   );
   }

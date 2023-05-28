@@ -230,7 +230,7 @@ export default () => {
       title: 'Action',
       dataIndex: 'id',
       key: 'id',
-      render: (id) => <a href={id}>进入</a>,
+      render: (id) => <a href={`/problem/${id}`}>进入</a>,
     }
   ];
 

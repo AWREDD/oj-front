@@ -25,28 +25,28 @@ const columns: ColumnsType<DataType> = [
     render: (text) => <a>{text}</a>,
   },
   {
-    title: 'user_id',
+    title: 'User ID',
     dataIndex: 'user_id',
     key: 'user_id',
   },
   {
-    title: 'context_id',
+    title: 'Assignment ID',
     dataIndex: 'context_id',
     key: 'context_id',
   },
   {
-    title: 'oss_id',
+    title: 'Attachment',
     dataIndex: 'oss_id',
     key: 'oss_id',
-    render: (text) => <a href ={`${text}`} >{text}</a>,
+    render: (text) => <a href ={`https://simple-oj.oss-cn-shenzhen.aliyuncs.com/${text}.pdf`}  target="_blank">Attachment</a>,
   },
   {
-    title: 'comment',
+    title: 'Comment',
     dataIndex: 'comment',
     key: 'comment',
   },
   {
-    title: 'grade',
+    title: 'Grade',
     dataIndex: 'grade',
     key: 'grade',
   },
@@ -132,7 +132,7 @@ export default  function Check(){
             <TextArea
               showCount
               maxLength={100}
-              style={{ height: 200, marginBottom: 24 }}
+              style={{ height: 250, marginBottom: 24 }}
               onChange={onChange}
               placeholder='请输入评语'
             />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Button,
   Card,
@@ -18,25 +18,23 @@ import {
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { history} from 'umi';
-import request from 'umi-request';
 import {MinusCircleOutlined, PlusOutlined, UploadOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 const { Step } = Steps;
-import { InboxOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
 
-const { Dragger } = Upload;
+import { request } from '@/utils/request';
+
 
 // upload
 
-
-
 interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
+    id: number;
+    title: string;
+    time_limit: number;
+    year: number;
+    difficulty: number;
+    derivation: string;
+    content: string;
 }
 
 function RangePicker() {
@@ -44,10 +42,77 @@ function RangePicker() {
 }
 
 export default () => {
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-    // setNewProblem(JSON.stringify(values));
+
+  const [data, setData] = useState([]);
+
+  const [newProblemID, setNewProblemID] = useState(0);
+
+  const [zipID, setZipID] = useState(0);
+
+  useEffect(() => {
+    request.get("/problem/?page=1&limit=1000")
+        .then(function (response) {
+          console.log(response.data);
+          setData(response.data);
+          return response;
+        })
+  }, []);
+
+  const onFinish1 = async (values: any) => {
+    console.log('Success:', {
+      title: values.title,
+      time_limit: values.time_limit,
+      year: values.year,
+      difficulty: values.difficulty,
+      derivation: values.derivation,
+      content: JSON.stringify({
+        description: values.description,
+        example: values.example,
+        solution: values.solution,
+        notice: values.notice,
+      })
+    });
+    let res = await request(`/problem/create`, {
+      method: 'POST',
+      data: {
+        title: values.title,
+        time_limit: values.time_limit,
+        year: values.year,
+        difficulty: values.difficulty,
+        derivation: values.derivation,
+        content: JSON.stringify({
+            description: values.description,
+            example: values.example,
+            solution: values.solution,
+            notice: values.notice,
+        })
+      }
+    });
+    console.log("F1", res);
+    setNewProblemID(res);
   };
+
+  const onFinish2 = async () => {
+    console.log('onFinish2', zipID, newProblemID);
+
+    let res = await request(`/upload/zip`, {
+        method: 'POST',
+        data: {
+          oss_id: zipID,
+          problem_id: newProblemID,
+        }
+    })
+    console.log("onF2", res);
+  };
+
+  const onSuccess = async (res: any) => {
+
+    if (typeof(res.file.response) !== "undefined") {
+      setZipID(res.file.response);
+      console.log("onSu", res.file.response);
+    }
+  }
+
 
   const steps = [
     {
@@ -59,9 +124,12 @@ export default () => {
             wrapperCol={{ span: 14 }}
             layout="horizontal"
             style={{ maxWidth: 500 }}
-            onFinish={onFinish}
+            onFinish={onFinish1}
         >
           <Form.Item label="Title" name="title">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Derivation" name="derivation">
             <Input />
           </Form.Item>
           <Form.Item label="Time Limit" name="time_limit">
@@ -73,14 +141,16 @@ export default () => {
           <Form.Item label="Difficulty" name="difficulty">
             <Select
                 style={{ width: 120 }}
-                options={[
-                  { value: 'easy', label: 'easy' },
-                  { value: 'midium', label: 'midium' },
-                  { value: 'hard', label: 'hard' },
-                ]}
+                options={[{ value: 'easy', label: 'easy' }, { value: 'medium', label: 'midium' }, { value: 'hard', label: 'hard' },]}
             />
           </Form.Item>
           <Form.Item label="Description" name="description">
+            <TextArea rows={4} />
+          </Form.Item>
+          <Form.Item label="Solution" name="solution">
+            <TextArea rows={4} />
+          </Form.Item>
+          <Form.Item label="Notice" name="notice">
             <TextArea rows={4} />
           </Form.Item>
           <Form.List label="Example" name="example">
@@ -90,14 +160,14 @@ export default () => {
                       <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                         <Form.Item
                             {...restField}
-                            name={[name, 'first']}
+                            name={[name, 'input']}
                             rules={[{ required: true, message: 'Missing first name' }]}
                         >
                           <Input placeholder="Input" />
                         </Form.Item>
                         <Form.Item
                             {...restField}
-                            name={[name, 'last']}
+                            name={[name, 'output']}
                             rules={[{ required: true, message: 'Missing last name' }]}
                         >
                           <Input placeholder="Output" />
@@ -114,7 +184,7 @@ export default () => {
             )}
           </Form.List>
           <Form.Item >
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" onClick={onFinish1}>
               Submit
             </Button>
           </Form.Item>
@@ -125,34 +195,37 @@ export default () => {
       title: 'Second',
       content: <div>
         <Divider></Divider>
-        <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            listType="picture"
-            maxCount={1}
+        <Form
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 14 }}
+            layout="horizontal"
+            style={{ maxWidth: 500 }}
+            onFinish={onFinish2}
         >
-          <Button icon={<UploadOutlined />}>Upload</Button>
-        </Upload>
+          <Form.Item>
+            <Upload
+                action="http://10.26.106.209:5001/upload/upload_zip"
+                listType="zip"
+                maxCount={1}
+                onChange={onSuccess}
+            >
+              <Button icon={<UploadOutlined />}>Upload</Button>
+            </Upload>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" onClick={onFinish2}>submit</Button>
+          </Form.Item>
+        </Form>
+
       </div>,
     },
   ];
 
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState('Content of the modal');
 
   const showModal = () => {
     setOpen(true);
   };
-
-  const handleOk = () => {
-    setModalText('The modal will be closed after two seconds');
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
-  };
-
   const handleCancel = () => {
     console.log('Clicked cancel button');
     setOpen(false);
@@ -160,41 +233,17 @@ export default () => {
 
   const [current, setCurrent] = useState(0);
 
-  const [newProblem, setNewProblem] = useState();
-
   const onChangeStep = (value: number) => {
     console.log('onChange:', value);
     setCurrent(value);
   };
 
-  const createProblem = async () => {
-
-  };
-
-  const getProblemDetail = async (id: number) => {
-    let res = await request(`/problem/${id}`, {
-        method: 'GET',
-    });
-    console.log(res);
-  };
-
-  const submitCode = async (user_id: number, language: string, code: string) => {
-    let res = await request(`/problem/submit`, {
-        method: 'POST',
-        data: {
-          language: language,
-          code: code,
-        }
-    });
-    console.log(res);
-  };
-
   const columns: ColumnsType<DataType> = [
     {
-      title: '状态',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status) => <a key={status}>{status}</a>,
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      render: (id) => <a key={id}>{id}</a>,
     },
     {
       title: '题目',
@@ -230,53 +279,15 @@ export default () => {
       title: 'Action',
       dataIndex: 'id',
       key: 'id',
-      render: (id) => <a href={id}>进入</a>,
+      render: (id) => <a href={`/problem/${id}`}>进入</a>,
     }
   ];
 
-  const data: any = [
-    {
-      id: '1',
-      status: '1',
-      title: '两数相加1',
-      year: '2021',
-      difficulty: 'easy',
-      derivation: 'noip'
-    },
-    {
-      id: '2',
-      status: '0',
-      title: '两数相加2',
-      year: '2021',
-      difficulty: 'easy',
-      derivation: 'noip'
-    },
-    {
-      id: '3',
-      status: '1',
-      title: '两数相加3',
-      year: '2021',
-      difficulty: 'medium',
-      derivation: 'noi'
-    },
-    {
-      id: '4',
-      status: '0',
-      title: '两数相加4',
-      year: '2022',
-      difficulty: 'hard',
-      derivation: 'acm'
-    },
-  ];
-
-  const goProblemDetail = (id: number) => {
-    history.push(`/problem/${id}`);
-  };
   return (
       <div>
           <Row gutter={[24, 24]}>
             <Col span={12} offset={6}>
-              <Card style={{ height: 800 }}>
+              <Card style={{ height: 800, width: 800}}>
                 <>
                   <Button block onClick={showModal}>
                     Add Problem
@@ -284,8 +295,7 @@ export default () => {
                   <Modal
                       title="添加题目"
                       open={open}
-                      onOk={handleOk}
-                      confirmLoading={confirmLoading}
+                      onOk={handleCancel}
                       onCancel={handleCancel}
                       width={700}
                       okButtonProps={{ disabled: current === 0 }}
@@ -303,11 +313,8 @@ export default () => {
                 <Divider />
                 <>
                   <Table pagination={false} columns={columns} dataSource={data}  />
-                  <div>{newProblem}</div>
+
                 </>
-
-
-
               </Card>
 
             </Col>

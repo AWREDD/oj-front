@@ -1,12 +1,27 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { LikeOutlined, MessageOutlined, StarOutlined } from "@ant-design/icons";
 import { Avatar, List, Space } from "antd";
 import { Card, Col, Row, Button, Input } from "antd";
 import { Typography } from "antd";
 const { Title, Paragraph, Text } = Typography;
 import InfiniteScroll from "react-infinite-scroll-component";
+import {request} from "@/utils/request";
 
 export default () => {
+
+  const [mainDate, setMainDate] = useState({});
+  const [newReplyID, setNewReplyID] = useState(0);
+
+  // TODO
+  useEffect(() => {
+    request.get("/assignment/")
+        .then(function (response) {
+          console.log(response.data);
+          setAssignmentData(response.data);
+          return response;
+        })
+  }, []);
+
   // data
 
   const main_data = {
@@ -119,13 +134,6 @@ export default () => {
               <Card>
                 <List.Item
                   key={item.title}
-                  actions={[
-                    <IconText
-                      icon={MessageOutlined}
-                      text={item.reply}
-                      key="list-vertical-message"
-                    />,
-                  ]}
                 >
                   <List.Item.Meta
                     avatar={<Avatar src={item.avatar} />}

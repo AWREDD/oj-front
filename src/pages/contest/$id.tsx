@@ -127,7 +127,7 @@ export default () => {
     return (
         <>
             <Row gutter={[24, 24]}>
-                <Col span={12} offset={6}>>
+                <Col span={12} offset={6}>
                     <Card style={{ height: 400 }}>
                         <div>
                             <Typography>

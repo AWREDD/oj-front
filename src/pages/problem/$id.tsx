@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useState } from "react";
 
 import { Select, Card, Button } from "antd";
@@ -18,6 +18,8 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
+import {request} from "@/utils/request";
+import {history} from "umi";
 
 interface RecordType {
   key: React.Key;
@@ -28,38 +30,8 @@ interface RecordType {
   language: string;
 }
 
-const data = {
-  id: 1,
-  title: "两数相加",
-  description : {
-    content:
-        "给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。请你将两个数相加，并以相同形式返回一个表示和的链表。你可以假设除了数字 0 之外，这两个数都不会以 0 开头。",
-    example: [
-      {
-        input: "l1 = [2,4,3], l2 = [5,6,4]",
-        output: "l3 = [7,0,8]",
-      },
-      {
-        input: "l1 = [0], l2 = [0]",
-        output: "l3 = [0]",
-      },
-    ],
-    notice: [
-      "每个链表中的节点数在范围 [1, 100] 内",
-      "0 <= Node.val <= 9",
-      "题目数据保证列表表示的数字不含前导零",
-    ],
-  },
-  tags : [
-    { index: 0, content: "easy", color: "green" },
-    { index: 1, content: "2021", color: "orange" },
-    { index: 2, content: "noip", color: "red" },
-  ]
-
-}
-
 const record_col: ColumnsType<RecordType> = [
-  { title: "Time", dataIndex: "time", key: "time" },
+  { title: "Time", dataIndex: "create_time", key: "create_time" },
   {
     title: "Status",
     dataIndex: "status",
@@ -78,45 +50,83 @@ const record_col: ColumnsType<RecordType> = [
       </Tag>
     ),
   },
-  { title: "Memory", dataIndex: "memory", key: "memory" },
-  { title: "Timecost", dataIndex: "timecost", key: "timecost" },
+  { title: "Message", dataIndex: "returned", key: "returned" },
   { title: "Language", dataIndex: "language", key: "language" },
-];
-
-const record: any = [
-  {
-    key: "1",
-    time: "2021-10-10 10:10:10",
-    status: "Accepted",
-    memory: "1000",
-    timecost: "1000",
-    language: "java",
-  },
-  {
-    key: "2",
-    time: "2020-02-02 02:02:02",
-    status: "Wrong Answer",
-    memory: "500",
-    timecost: "100",
-    language: "java",
-  },
-  {
-    key: "3",
-    time: "2020-03-02 02:02:02",
-    status: "Timeout",
-    memory: "500",
-    timecost: "1020",
-    language: "c",
-  },
 ];
 
 const solution = {
   decription:
     "由于输入的两个链表都是逆序存储数字的位数的，因此两个链表中同一位置的数字可以直接相加。我们同时遍历两个链表，逐位计算它们的和，并与当前位置的进位值相加。具体而言，如果当前两个链表处相应位置的数字为 n1,n2n1,n2n1,n2，进位值为 carry\textit{carry}carry，则它们的和为 n1+n2+carryn1+n2+\textit{carry}n1+n2+carry；其中，答案链表处相应位置的数字为 (n1+n2+carry) mod 10(n1+n2+\textit{carry}) \bmod 10(n1+n2+carry)mod10，而新的进位值为 ⌊n1+n2+carry10⌋lfloor\frac{n1+n2+\textit{carry}}{10}\rfloor⌊ 10 n1+n2+carry⌋。如果两个链表的长度不同，则可以认为长度短的链表的后面有若干个 000 。此外，如果链表遍历结束后，有 carry>0\textit{carry} > 0carry>0，还需要在答案链表的后面附加一个节点，节点的值为 carry\textit{carry}carry。",
-  code: "test",
 };
 
 const ProblemDetail: React.FC = () => {
+
+  const [submitData, setSubmitData] = useState([])
+
+  const [language, setLanguage] = useState("c");
+
+  const [code, setCode] = useState("function onLoad(editor) {\n" +
+      "     console.log(\"i've loaded\");\n" +
+      "}");
+
+  useEffect(() => {
+    request.get("/submit/histories/user/problem?user_id=1&problem_id=" + problem_id + "&page=1&limit=1000")
+        .then(function (response) {
+          console.log(response.data);
+          setSubmitData(response.data);
+          return response;
+        })
+  }, []);
+
+  const problem_id =  location.pathname.split("/")[2]
+  console.log(problem_id)
+
+  const [problemDetailData, setProblemDetailData] = useState({
+    id: "1",
+    title: "测试标题",
+    time_limit: "10",
+    year: "2000",
+    difficulty: "hard",
+    derivation: "NOIP",
+    content: {
+        description: "这个是介绍",
+        example: [
+          {input: "1", output: "2"},
+        ],
+        notice: "提示",
+        solution: "这个是解析"
+    }
+  });
+  const [problemSubmitData, setProblemSubmitData] = useState([]);
+
+  useEffect(() => {
+    console.log("useEffect")
+    request.get("/problem/detail?id=" + problem_id).then(
+        (response) => {
+          console.log(response.data.problem)
+          const data_content = JSON.parse(response.data.problem.content)
+          setProblemDetailData({
+            id: response.data.problem.id,
+            title: response.data.problem.title,
+            time_limit: response.data.problem.time_limit,
+            year: response.data.problem.year,
+            difficulty: response.data.problem.difficulty,
+            derivation: response.data.problem.derivation,
+            content: {
+                description: data_content.description,
+                example: data_content.example,
+                notice: data_content.notice,
+                solution: data_content.solution
+            }
+          })
+
+        }
+    )
+    console.log("fetchData")
+
+  }, []);
+
+
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -125,10 +135,10 @@ const ProblemDetail: React.FC = () => {
         <div>
           <Typography>
             <Title level={4}>description</Title>
-            <Paragraph>{data.description.content}</Paragraph>
+            <Paragraph>{problemDetailData.content.description}</Paragraph>
             <Title level={4}>Example</Title>
             <Paragraph type="secondary">
-              {data.description.example.map((e, i) => (
+              {problemDetailData.content.example.map((e, i) => (
                 <div key={i}>
                   <div>
                     <Typography.Title level={5}>Input</Typography.Title>
@@ -143,14 +153,13 @@ const ProblemDetail: React.FC = () => {
                       {e.output}
                     </Typography.Text>
                   </div>
+
                 </div>
               ))}
             </Paragraph>
             <Title level={4}>Notice</Title>
             <Paragraph>
-              {data.description.notice.map((e, i) => (
-                <li key={i}>{e}</li>
-              ))}
+              {problemDetailData.content.notice}
             </Paragraph>
           </Typography>
         </div>
@@ -163,11 +172,7 @@ const ProblemDetail: React.FC = () => {
         <div>
           <Typography>
             <Title level={4}>Solution</Title>
-            <Paragraph>{solution.decription}</Paragraph>
-            <Title level={4}>Code</Title>
-            <Paragraph type="secondary">
-              <Typography.Text code>{solution.code}</Typography.Text>
-            </Paragraph>
+            <Paragraph>{problemDetailData.content.solution}</Paragraph>
           </Typography>
         </div>
       ),
@@ -175,7 +180,7 @@ const ProblemDetail: React.FC = () => {
     {
       key: "3",
       label: `Record`,
-      children: <Table dataSource={record} columns={record_col} />,
+      children: <Table pagination={false} dataSource={submitData} columns={record_col} />,
     },
   ];
 
@@ -185,10 +190,28 @@ const ProblemDetail: React.FC = () => {
 
   function onChange_text(newValue) {
     console.log("change", newValue);
+    setCode(newValue);
+    console.log("code", code);
   }
 
   const onChange_select = (value: string) => {
     console.log(`selected ${value}`);
+    setLanguage(value);
+  };
+
+  const submitCode = async () => {
+    await request("/submit/submit",{
+      method: 'POST',
+      data: {
+        user_id: 1,
+        problem_id: problem_id,
+        code: code,
+        language: language,
+      }
+    })
+        .then(res => {
+            console.log(res)
+        })
   };
 
   return (
@@ -196,13 +219,11 @@ const ProblemDetail: React.FC = () => {
       <Row>
         <Col span={12}>
           <div>
-            <Card title="Q1. 两数相加" style={{ height: 1000 }}>
+            <Card title = {problemDetailData.title} style={{ height: 1000 }}>
               <Space wrap>
-                {data.tags.map((e) => (
-                  <Tag key={e.index} color={e.color} bordered>
-                    {e.content}
-                  </Tag>
-                ))}
+                <Tag color="magenta">{problemDetailData.year}</Tag>
+                <Tag color="red">{problemDetailData.difficulty}</Tag>
+                <Tag color="volcano">{problemDetailData.derivation}</Tag>
               </Space>
               <Tabs
                 defaultActiveKey="1"
@@ -227,12 +248,11 @@ const ProblemDetail: React.FC = () => {
                         .includes(input.toLowerCase())
                     }
                     options={[
-                      { value: "java", label: "java" },
+                      { value: "c++", label: "c++" },
                       { value: "c", label: "c" },
-                      { value: "python", label: "python" },
                     ]}
                   />
-                  <Button key={1} type="primary">
+                  <Button key={1} type="primary" onClick={submitCode}>
                     Submit
                   </Button>
                 </Space>
@@ -249,9 +269,7 @@ const ProblemDetail: React.FC = () => {
                 showPrintMargin={true}
                 showGutter={true}
                 highlightActiveLine={true}
-                value={`function onLoad(editor) {
-                        console.log("i've loaded");
-                        }`}
+                value={code}
                 setOptions={{
                   enableBasicAutocompletion: false,
                   enableLiveAutocompletion: false,

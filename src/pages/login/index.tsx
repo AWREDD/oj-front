@@ -4,6 +4,7 @@ import React ,{useState}from 'react';
 import styles from './index.module.less';
 import { useNavigate } from 'react-router-dom'
 import { useModel } from 'umi';
+
 const baseUrl = 'http://10.26.106.209:5001';
 
 function callback(key) {
@@ -28,12 +29,13 @@ export default function Login() {
         'Content-Type': 'application/json'
       }
     })
-    let data = await res.json();
-    console.log(data);
-    if (data.status_code === 200) {
+    res = await res.json();
+    console.log(res);
+    if (res.status_code === 200) {
       
       setisLoginSuccess(true);
-      setUserData(values.username, data.data)
+      setUserData(values.username, res.data.user.id, res.data.user.level)
+      console.log(user)
       navigate('/')
 
     }else{

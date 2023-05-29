@@ -1,6 +1,6 @@
 import React ,{useEffect, useState}from 'react';
 import { history } from 'umi';
-import { Button, Space } from 'antd';
+import { Button, Space, Table} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useNavigate } from 'react-router-dom'
 const id = 2;
@@ -56,7 +56,7 @@ const columns: ColumnsType<DataType> = [
   
 ];
 
-const baseUrl = 'http://127.0.0.1:5000';
+const baseUrl = 'http://10.26.106.209:5001';
 export default  function Contest(){
   const navigate = useNavigate()
   const [isDoneLoading, setisDoneLoading] = useState(false);

@@ -3,12 +3,14 @@ import { Footer } from 'antd/lib/layout/layout';
 import React ,{useState}from 'react';
 import styles from './index.module.less';
 import { useNavigate } from 'react-router-dom'
-const baseUrl = 'http://127.0.0.1:5000';
+import { useModel } from 'umi';
+const baseUrl = 'http://10.26.106.209:5001';
 
 function callback(key) {
   console.log(key);
 }
 export default function Login() {
+  const { user, setUserData } = useModel('userModel')
   const [isLoginSuccess, setisLoginSuccess] = useState(true);
   const navigate = useNavigate()
   const onClose = () => {
@@ -31,7 +33,9 @@ export default function Login() {
     if (data.status_code === 200) {
       
       setisLoginSuccess(true);
+      setUserData(values.username, data.data)
       navigate('/')
+
     }else{
       setisLoginSuccess(false);
     }

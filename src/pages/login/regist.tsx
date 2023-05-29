@@ -4,7 +4,7 @@ import styles from './index.module.less';
 import { Footer } from 'antd/lib/layout/layout';
 import { useNavigate } from 'react-router-dom'
 
-const baseUrl = 'http://127.0.0.1:5000';
+const baseUrl = 'http://10.26.106.209:5001';
 
 
 
@@ -30,7 +30,8 @@ export default function Register() {
     console.log(data);
     if (data.status_code === 200) {
       setisDoneRegister(true);
-      navigate('/')
+      navigate('/login')
+
     }else{
       setisDoneRegister(false);
     }

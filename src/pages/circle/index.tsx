@@ -39,7 +39,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   return (
       <Modal
           open={open}
-          title="新建作业"
+          title="新建Topic"
           okText="Create"
           cancelText="Cancel"
           style={{ maxWidth: 800 }}
@@ -48,7 +48,18 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
             form
                 .validateFields()
                 .then((values) => {
-                  form.resetFields();
+                  console.log('Validate Failed:', values);
+                  request("/comment/create_topic", {
+                    method: 'POST',
+                    data: {
+                      title: values.title,
+                      description: values.description,
+                      contributor: JSON.parse(localStorage.getItem("userInfo") as string).username,
+
+                    }
+                  }).then(res => {
+                    console.log(res);
+                  })
                   onCreate(values);
                 })
                 .catch((info) => {
@@ -74,6 +85,8 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   );
 };
 
+
+
 const circleDateColumns: ColumnsType<DataType> = [
   {
     title: "Title",
@@ -82,23 +95,20 @@ const circleDateColumns: ColumnsType<DataType> = [
     render: (text) => <a>{text}</a>,
   },
   {
-    title: "Date",
-    dataIndex: "date",
-    key: "date",
+    title: "Create Time",
+    dataIndex: "create_at",
+    key: "create_at",
   },
   {
     title: "Author",
-    dataIndex: "author",
-    key: "author",
+    dataIndex: "contributor",
+    key: "contributor",
   },
   {
     title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-      </Space>
-    ),
+    dataIndex: "id",
+    key: "id",
+    render: (id) => <a href={`/circle/${id}`}>进入</a>,
   },
 ];
 
@@ -107,38 +117,11 @@ const circleDateColumns: ColumnsType<DataType> = [
 export default () => {
 
   const [circlesData, setCirclesData] = useState([]);
-  const [newCircleID, setNewCircleID] = useState(0);
 
-  const circleDataColumns: ColumnsType<DataType> = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-      render: (id) => <a key={id}>{id}</a>,
-    },
-    {
-      title: '题目',
-      dataIndex: 'title',
-      key: 'title',
-      render: (title) => <a key={title}>{title}</a>,
-    },
-    {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
-      render: (date) => <a key={date}>{date}</a>,
-    },
-    {
-      title: 'Action',
-      dataIndex: 'id',
-      key: 'id',
-      render: (id) => <a href={`/problem/${id}`}>进入</a>,
-    }
-  ]
 
   // TODO
   useEffect(() => {
-    request.get("http://127.0.0.1:5000/assignment/")
+    request("/comment/topic")
         .then(function (response) {
           console.log(response.data);
           setCirclesData(response.data);

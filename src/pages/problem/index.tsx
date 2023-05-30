@@ -23,6 +23,7 @@ import TextArea from "antd/es/input/TextArea";
 const { Step } = Steps;
 
 import { request } from '@/utils/request';
+import {useModel} from "umi";
 
 
 // upload
@@ -42,6 +43,11 @@ function RangePicker() {
 }
 
 export default () => {
+
+  const {user, setUser} = useModel('userModel');
+
+  console.log("user", localStorage.getItem("userInfo"));
+
 
   const [data, setData] = useState([]);
 
@@ -289,7 +295,7 @@ export default () => {
             <Col span={12} offset={6}>
               <Card style={{ height: 800, width: 800}}>
                 <>
-                  <Button block onClick={showModal}>
+                  <Button disabled={JSON.parse(localStorage.getItem("userInfo") as string).level === 1} block onClick={showModal}>
                     Add Problem
                   </Button>
                   <Modal

@@ -55,11 +55,22 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
             form
                 .validateFields()
                 .then((values) => {
-                  form.resetFields();
+                    console.log('Validate Failed:', values);
+                    request("/event/create_assignment", {
+                        method: 'POST',
+                        data: {
+                            title: values.title,
+                            description: values.description,
+                            start_at: values.start_at,
+                            due_at: values.due_at,
+                        }
+                    }).then(res => {
+                        console.log(res);
+                    })
                   onCreate(values);
                 })
                 .catch((info) => {
-                  console.log('Validate Failed:', info);
+
                 });
           }}
       >
@@ -75,9 +86,12 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
             <Form.Item label="Description" name="description">
               <TextArea rows={4} />
             </Form.Item>
-            <Form.Item label="Deadline" name="deadline">
+            <Form.Item label="Start Time" name="start_at">
               <DatePicker showTime onChange={onChangeDDL} onOk={onOkDDL} />
             </Form.Item>
+              <Form.Item label="End Time" name="due_at">
+                  <DatePicker showTime onChange={onChangeDDL} onOk={onOkDDL} />
+              </Form.Item>
           </Form>
         </div>
       </Modal>
@@ -91,7 +105,7 @@ export default ()=>{
 
   // TODO
   useEffect(() => {
-    request.get("/assignment/")
+    request.get("/event/assignment")
         .then(function (response) {
           console.log(response.data);
           setAssignmentData(response.data);
@@ -114,16 +128,22 @@ export default ()=>{
     },
       // TODO: deadline 名字？
     {
-      title: 'DDL',
-      dataIndex: 'deadline',
-      key: 'deadline',
-      render: (ddl) => <a key={ddl}>{ddl}</a>,
+      title: 'Start',
+      dataIndex: 'start_at',
+      key: 'start_at',
+      render: (start_at) => <a key={start_at}>{start_at}</a>,
     },
+      {
+          title: 'End',
+          dataIndex: 'due_at',
+          key: 'due_at',
+          render: (due_at) => <a key={due_at}>{due_at}</a>,
+      },
     {
       title: 'Action',
       dataIndex: 'id',
       key: 'id',
-      render: (id) => <a href={`/problem/${id}`}>进入</a>,
+      render: (id) => <a href={`/assignment/${id}`}>进入</a>,
     }
   ]
 
@@ -144,6 +164,7 @@ export default ()=>{
             <>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <div>
                 <Button
+                    disabled={JSON.parse(localStorage.getItem("userInfo") as string).level === 1}
                     type="primary"
                     onClick={() => {
                       setOpen(true);

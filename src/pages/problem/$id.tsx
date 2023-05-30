@@ -54,12 +54,17 @@ const record_col: ColumnsType<RecordType> = [
   { title: "Language", dataIndex: "language", key: "language" },
 ];
 
-const solution = {
-  decription:
-    "由于输入的两个链表都是逆序存储数字的位数的，因此两个链表中同一位置的数字可以直接相加。我们同时遍历两个链表，逐位计算它们的和，并与当前位置的进位值相加。具体而言，如果当前两个链表处相应位置的数字为 n1,n2n1,n2n1,n2，进位值为 carry\textit{carry}carry，则它们的和为 n1+n2+carryn1+n2+\textit{carry}n1+n2+carry；其中，答案链表处相应位置的数字为 (n1+n2+carry) mod 10(n1+n2+\textit{carry}) \bmod 10(n1+n2+carry)mod10，而新的进位值为 ⌊n1+n2+carry10⌋lfloor\frac{n1+n2+\textit{carry}}{10}\rfloor⌊ 10 n1+n2+carry⌋。如果两个链表的长度不同，则可以认为长度短的链表的后面有若干个 000 。此外，如果链表遍历结束后，有 carry>0\textit{carry} > 0carry>0，还需要在答案链表的后面附加一个节点，节点的值为 carry\textit{carry}carry。",
-};
-
 const ProblemDetail: React.FC = () => {
+
+  const [submitStatus, setSubmitStatus] = useState(0);
+
+  const changeSubmitStatus = () => {
+    if (submitStatus === 0) {
+      setSubmitStatus(1);
+    } else {
+      setSubmitStatus(0);
+    }
+  }
 
   const [submitData, setSubmitData] = useState([])
 
@@ -70,13 +75,15 @@ const ProblemDetail: React.FC = () => {
       "}");
 
   useEffect(() => {
-    request.get("/submit/histories/user/problem?user_id=1&problem_id=" + problem_id + "&page=1&limit=1000")
+    let userInfo = JSON.parse(localStorage.getItem("userInfo") as string);
+    let user_id = userInfo.user_id;
+    request.get("/submit/histories/user/problem?user_id=" + user_id + "&problem_id=" + problem_id + "&page=1&limit=1000")
         .then(function (response) {
           console.log(response.data);
           setSubmitData(response.data);
           return response;
         })
-  }, []);
+  }, [submitStatus]);
 
   const problem_id =  location.pathname.split("/")[2]
   console.log(problem_id)
@@ -97,7 +104,6 @@ const ProblemDetail: React.FC = () => {
         solution: "这个是解析"
     }
   });
-  const [problemSubmitData, setProblemSubmitData] = useState([]);
 
   useEffect(() => {
     console.log("useEffect")
@@ -200,10 +206,11 @@ const ProblemDetail: React.FC = () => {
   };
 
   const submitCode = async () => {
+    let userInfo = JSON.parse(localStorage.getItem("userInfo") as string)
     await request("/submit/submit",{
       method: 'POST',
       data: {
-        user_id: 1,
+        user_id: userInfo.user_id,
         problem_id: problem_id,
         code: code,
         language: language,
@@ -211,6 +218,7 @@ const ProblemDetail: React.FC = () => {
     })
         .then(res => {
             console.log(res)
+            changeSubmitStatus()
         })
   };
 

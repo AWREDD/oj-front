@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
+import { UserOutlined } from '@ant-design/icons';
 import { LikeOutlined, MessageOutlined, StarOutlined } from "@ant-design/icons";
-import { Avatar, List, Space } from "antd";
+import {Avatar, Form, List, Space} from "antd";
 import { Card, Col, Row, Button, Input } from "antd";
 import { Typography } from "antd";
 const { Title, Paragraph, Text } = Typography;
@@ -9,87 +10,60 @@ import {request} from "@/utils/request";
 
 export default () => {
 
-  const [mainDate, setMainDate] = useState({});
-  const [newReplyID, setNewReplyID] = useState(0);
+  const topic_id =  location.pathname.split("/")[2]
+  console.log(topic_id)
+
+  const [commentData, setCommentData] = useState("");
+
+  const [commentList, setCommentList] = useState([{}]);
+  const onFinish = async (value: any) => {
+    await request("/comment/create_comment",{
+        method: "POST",
+        data: {
+            floor_id: topic_id,
+            content: value.content,
+            contributor: JSON.parse(localStorage.getItem("userInfo") as string).username,
+        }
+    }).then(function (response) {
+        console.log(response.data);
+    })
+  }
+
+  const [topicData, setTopicData] = useState({
+    title: "",
+    create_date: "",
+    description: "",
+    contributor: "",
+  });
+  const [discussionData, setDiscussionData] = useState([{}]);
 
   // TODO
   useEffect(() => {
-    request.get("/assignment/")
+    request("/comment/detail",{
+        method: "POST",
+        data: {
+          topic_id: topic_id,
+        }
+    })
         .then(function (response) {
-          console.log(response.data);
-          setAssignmentData(response.data);
+          console.log("res1", response.data.floor);
+          setTopicData(response.data.floor);
+          return response;
+        })
+
+    request("/comment/details",{
+      method: "POST",
+      data: {
+        topic_id: topic_id,
+      }
+    })
+        .then(function (response) {
+          console.log("res2", response.data);
+          setDiscussionData(response.data);
           return response;
         })
   }, []);
 
-  // data
-
-  const main_data = {
-    title: "CS333 Main Topic",
-    date: "2020-09-01",
-    content: "what is the name of the CS3333 Main Topic?",
-    author: "John Jhhanson",
-  };
-
-  const data = Array.from({ length: 23 }).map((_, i) => ({
-    href: "https://ant.design",
-    title: `ant design part ${i}`,
-    avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=1`,
-    description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-    content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-  }));
-
-  const circle_data = [
-    {
-      id: 1,
-      avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=1`,
-      title: "discussion01",
-      date: "2020-09-01",
-      content: "what is the name of the discussion 01?",
-      author: "John",
-      reply: 2,
-    },
-    {
-      id: 2,
-      avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=2`,
-      title: "discussion02",
-      date: "2020-09-02",
-      content: "what is the name of the discussion 02?",
-      author: "John",
-      reply: 3,
-    },
-    {
-      id: 3,
-      avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=3`,
-      title: "discussion03",
-      date: "2020-09-03",
-      content: "what is the name of the discussion 03?",
-      author: "John",
-      reply: 4,
-    },
-    {
-      id: 4,
-      avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=4`,
-      title: "discussion04",
-      date: "2020-09-04",
-      content: "what is the name of the discussion 04?",
-      author: "John",
-      reply: 5,
-    },
-  ];
-
-  const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
-    <Space>
-      {React.createElement(icon)}
-      {text}
-    </Space>
-  );
-
-  console.log(data);
-
-  // changer
 
   return (
     <div>
@@ -98,54 +72,59 @@ export default () => {
           <Card>
             <div>
               <Typography>
-                <Title level={1}>{main_data.title}</Title>
+                <Title level={1}>{topicData.title}</Title>
                 <Title level={5}>
-                  {main_data.date} {main_data.author}
+                  时间：{topicData.create_at}
                 </Title>
-                <Paragraph>{main_data.content}</Paragraph>
+                <Title level={5}>
+                  作者：{topicData.contributor}
+                </Title>
+                <Title level={5}>
+                    描述：{topicData.description}
+                </Title>
               </Typography>
             </div>
           </Card>
         </Col>
-        
-        <Col span={12} offset={6}>
-          <Space.Compact style={{ width: "100%" }}>
-            <Input defaultValue="Combine input and button" />
-            <Button type="primary">Submit</Button>
-          </Space.Compact>
-        </Col>
-
         <Col span={12} offset={6}>
           <List
             grid={{ column: 1 }}
             itemLayout="vertical"
             size="large"
-            pagination={{
-              // TODO: 翻页
-              simple: true,
-              onChange: (page) => {
-                console.log(page);
-              },
-              pageSize: 5,
-              align: "center",
-            }}
-            dataSource={circle_data}
+            pagination={false}
+            dataSource={discussionData}
             renderItem={(item) => (
               <Card>
                 <List.Item
                   key={item.title}
                 >
                   <List.Item.Meta
-                    avatar={<Avatar src={item.avatar} />}
+                    avatar={<Avatar icon={<UserOutlined />} />}
                     // TODO: href router
-                    title={<a href="\circle">{item.author}</a>}
-                    description={item.date}
+                    title={<a href="\circle">{item.contributor}</a>}
+                    description={item.create_at}
                   />
-                  {item.content}
+                  <h4>{item.content}</h4>
                 </List.Item>
               </Card>
             )}
           />
+        </Col>
+        <Col span={12} offset={6}>
+          <Form
+              name="nest-messages"
+              onFinish={onFinish}
+              style={{ maxWidth: 600 }}
+          >
+            <Form.Item name="content">
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item >
+              <Button type="primary" htmlType="submit" onClick={onFinish}>
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
         </Col>
       </Row>
     </div>

@@ -118,15 +118,9 @@ const Header: React.FC = () => {
     };
 
 
-    if (userInfo.level == 2) {
-        return <App >
-            <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={teacherItems} />
-        </App>;
-    }else{
-        return <App >
-            <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={studentItems} />
-        </App>;
-    }
+    return <App >
+        <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={teacherItems} />
+    </App>;
 
 
 

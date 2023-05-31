@@ -24,6 +24,7 @@
     "react-ace": "^10.1.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^6.11.2",
+    "serve": "^14.2.0",
     "services": "link:@/services",
     "umi": "^4.0.69",
     "umi-request": "^1.4.0"

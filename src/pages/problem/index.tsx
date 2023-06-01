@@ -1,3 +1,5 @@
+// @ts-ignore
+
 import React, {useEffect, useState} from 'react';
 import {
   Button,
@@ -17,13 +19,11 @@ import {
 } from 'antd';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { history} from 'umi';
 import {MinusCircleOutlined, PlusOutlined, UploadOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 const { Step } = Steps;
 
 import { request } from '@/utils/request';
-import {useModel} from "umi";
 
 
 // upload
@@ -42,9 +42,8 @@ function RangePicker() {
   return null;
 }
 
-export default () => {
+export default function ProblemBank(){
 
-  const {user, setUser} = useModel('userModel');
 
   console.log("user", localStorage.getItem("userInfo"));
 

@@ -1,6 +1,7 @@
 import yayJpg from '../assets/yay.jpg';
 import { history } from 'umi';
 import { Layout, Space } from 'antd';
+import React from 'react';
 
 export default function HomePage() {
     let userInfo = {
@@ -12,7 +13,7 @@ export default function HomePage() {
     history.push('/problem');
   return (
     <div>
-
+        yes
     </div>
   );
 }

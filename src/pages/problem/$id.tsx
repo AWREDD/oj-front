@@ -194,7 +194,7 @@ const ProblemDetail: React.FC = () => {
     console.log(key);
   };
 
-  function onChange_text(newValue) {
+  function onChange_text(newValue:any) {
     console.log("change", newValue);
     setCode(newValue);
     console.log("code", code);

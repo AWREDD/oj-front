@@ -1,0 +1,66 @@
+Date : 2023-06-01 18:33:23
+Directory : /Users/pengyingzhi/oj-front/src
+Total : 26 files,  2146 codes, 10 comments, 254 blanks, all 2410 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| TypeScript JSX |         23 |      2,079 |          9 |        244 |      2,332 |
+| Less           |          2 |         59 |          1 |          6 |         66 |
+| TypeScript     |          1 |          8 |          0 |          4 |         12 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                          | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                             |         26 |      2,146 |         10 |        254 |      2,410 |
+| components                                                    |          1 |        110 |          0 |         19 |        129 |
+| components/Header                                             |          1 |        110 |          0 |         19 |        129 |
+| layouts                                                       |          2 |         24 |          0 |          6 |         30 |
+| models                                                        |          1 |          8 |          0 |          4 |         12 |
+| pages                                                         |         21 |      2,000 |         10 |        224 |      2,234 |
+| pages (Files)                                                 |          2 |         32 |          0 |          5 |         37 |
+| pages/assignment                                              |          3 |        318 |          2 |         31 |        351 |
+| pages/check                                                   |          2 |        125 |          0 |         13 |        138 |
+| pages/circle                                                  |          3 |        275 |          3 |         31 |        309 |
+| pages/contest                                                 |          3 |        348 |          2 |         36 |        386 |
+| pages/history                                                 |          2 |         81 |          1 |         16 |         98 |
+| pages/login                                                   |          4 |        253 |          1 |         30 |        284 |
+| pages/problem                                                 |          2 |        568 |          1 |         62 |        631 |
+| utils                                                         |          1 |          4 |          0 |          1 |          5 |
++---------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                      | language       | code       | comment    | blank      | total      |
++---------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| /Users/pengyingzhi/oj-front/src/components/Header/index.tsx   | TypeScript JSX |        110 |          0 |         19 |        129 |
+| /Users/pengyingzhi/oj-front/src/layouts/index.less            | Less           |         10 |          0 |          1 |         11 |
+| /Users/pengyingzhi/oj-front/src/layouts/index.tsx             | TypeScript JSX |         14 |          0 |          5 |         19 |
+| /Users/pengyingzhi/oj-front/src/models/userModel.ts           | TypeScript     |          8 |          0 |          4 |         12 |
+| /Users/pengyingzhi/oj-front/src/pages/404.tsx                 | TypeScript JSX |         16 |          0 |          2 |         18 |
+| /Users/pengyingzhi/oj-front/src/pages/assignment/$id.tsx      | TypeScript JSX |        142 |          0 |         14 |        156 |
+| /Users/pengyingzhi/oj-front/src/pages/assignment/_layout.tsx  | TypeScript JSX |          0 |          0 |          1 |          1 |
+| /Users/pengyingzhi/oj-front/src/pages/assignment/index.tsx    | TypeScript JSX |        176 |          2 |         16 |        194 |
+| /Users/pengyingzhi/oj-front/src/pages/check/_layout.tsx       | TypeScript JSX |          0 |          0 |          1 |          1 |
+| /Users/pengyingzhi/oj-front/src/pages/check/index.tsx         | TypeScript JSX |        125 |          0 |         12 |        137 |
+| /Users/pengyingzhi/oj-front/src/pages/circle/$id.tsx          | TypeScript JSX |        121 |          2 |         10 |        133 |
+| /Users/pengyingzhi/oj-front/src/pages/circle/_layout.tsx      | TypeScript JSX |          0 |          0 |          1 |          1 |
+| /Users/pengyingzhi/oj-front/src/pages/circle/index.tsx        | TypeScript JSX |        154 |          1 |         20 |        175 |
+| /Users/pengyingzhi/oj-front/src/pages/contest/$id.tsx         | TypeScript JSX |        145 |          0 |         13 |        158 |
+| /Users/pengyingzhi/oj-front/src/pages/contest/_layout.tsx     | TypeScript JSX |          0 |          0 |          1 |          1 |
+| /Users/pengyingzhi/oj-front/src/pages/contest/index.tsx       | TypeScript JSX |        203 |          2 |         22 |        227 |
+| /Users/pengyingzhi/oj-front/src/pages/history/_layout.tsx     | TypeScript JSX |          0 |          0 |          1 |          1 |
+| /Users/pengyingzhi/oj-front/src/pages/history/index.tsx       | TypeScript JSX |         81 |          1 |         15 |         97 |
+| /Users/pengyingzhi/oj-front/src/pages/index.tsx               | TypeScript JSX |         16 |          0 |          3 |         19 |
+| /Users/pengyingzhi/oj-front/src/pages/login/_layout.tsx       | TypeScript JSX |          0 |          0 |          1 |          1 |
+| /Users/pengyingzhi/oj-front/src/pages/login/index.module.less | Less           |         49 |          1 |          5 |         55 |
+| /Users/pengyingzhi/oj-front/src/pages/login/index.tsx         | TypeScript JSX |        107 |          0 |         11 |        118 |
+| /Users/pengyingzhi/oj-front/src/pages/login/regist.tsx        | TypeScript JSX |         97 |          0 |         13 |        110 |
+| /Users/pengyingzhi/oj-front/src/pages/problem/$id.tsx         | TypeScript JSX |        268 |          0 |         30 |        298 |
+| /Users/pengyingzhi/oj-front/src/pages/problem/index.tsx       | TypeScript JSX |        300 |          1 |         32 |        333 |
+| /Users/pengyingzhi/oj-front/src/utils/request.tsx             | TypeScript JSX |          4 |          0 |          1 |          5 |
+| Total                                                         |                |      2,146 |         10 |        254 |      2,410 |
++---------------------------------------------------------------+----------------+------------+------------+------------+------------+

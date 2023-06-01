@@ -23,9 +23,6 @@ const content = {
 };
 
 const tag = [{ "content": "easy", "color": "green" },{ "content": "2021", "color": "orange" },{ "content": "noip", "color": "red" }];
-
-  
-
 export default {
     "GET problem": {
         "id": 1,
@@ -33,8 +30,7 @@ export default {
         "contributor": "张三",
         "start_time": "2020-01-01 00:00:00",
         "time_limit": 1000,
-        // "content": content,
+        "content": content,
         "status": "AC"
-        // "tag": tag
     }
 }

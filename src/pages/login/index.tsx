@@ -10,7 +10,6 @@ function callback(key) {
     console.log(key);
 }
 export default function Login() {
-    const { user, setUserData } = useModel('userModel')
     const [isLoginSuccess, setisLoginSuccess] = useState(true);
     const navigate = useNavigate()
     const onClose = () => {
